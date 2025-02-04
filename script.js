@@ -1,5 +1,18 @@
 const API_KEY = "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"; // Ganti dengan API Key Anda
 
+function typeWriter(text, element, speed = 50) {
+  let i = 0;
+  element.textContent = ""; // Kosongkan elemen sebelum memulai animasi
+  function type() {
+    if (i < text.length) {
+      element.textContent += text.charAt(i);
+      i++;
+      setTimeout(type, speed); // Atur kecepatan mengetik (dalam milidetik)
+    }
+  }
+  type();
+}
+
 document.getElementById("submit").addEventListener("click", async () => {
   const userInput = document.getElementById("userInput").value.trim();
   const responseBox = document.getElementById("response");
@@ -32,8 +45,9 @@ document.getElementById("submit").addEventListener("click", async () => {
     }
 
     const data = await response.json();
-    responseBox.textContent =
+    const aiResponse =
       data.choices[0]?.message?.content || "No response received.";
+    typeWriter(aiResponse, responseBox);
   } catch (error) {
     console.error(error);
     responseBox.textContent = "An error occurred. Check console for details.";
